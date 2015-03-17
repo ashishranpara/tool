@@ -124,11 +124,24 @@ tinymce.init({
 	var $result = $('#result');
 
 	$('#buttons > a').click(function() {
-		var $target = $(tinymce.activeEditor.contentDocument.body).find('p, div'),
+		var $body = $(tinymce.activeEditor.contentDocument.body),
+			$target = $body.find('p, div'),
 			self = this;
 
 		if ($target.length > 0) {
+			$body.scrollTop(0);
+
+			$target.eq(0).find('img').each(function() {
+				var url = this.src;
+
+				if (/^https:\/\/cors-anywhere.herokuapp.com\//.exec(url) === null) {
+					this.crossOrigin = 'Anonymous';
+					this.src = 'https://cors-anywhere.herokuapp.com/' + url;
+				}
+			});
+
 			html2canvas($target[0], {
+				useCORS: true,
 				onrendered: function(canvas) {
 		    		$result.html(self.id === 'html2canvas' ? canvas : '<img src="' + canvas.toDataURL() + '">');
 		    		window.location = '#result';
