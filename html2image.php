@@ -9,7 +9,7 @@ body {
 	background: #DDD;
 }
 
-body > h1 {
+h1 {
 	margin: 12px 6px 8px;
 }
 
@@ -76,31 +76,101 @@ body > h1 {
 #result {
 	margin: 12px;
 }
+
+.converting #container {
+	opacity: 0.5;
+	transition: opacity .1s ease-in-out;
+}
+
+.converting .spinner {
+	display: block;
+}
+
+.spinner {
+	display: none;
+	width: 100%;
+	text-align: center;
+	position: fixed;
+	top: 40%;
+}
+
+.spinner > div {
+	width: 18px;
+	height: 18px;
+	background-color: orange;
+
+	border-radius: 100%;
+	display: inline-block;
+	-webkit-animation: bouncedelay 1.4s infinite ease-in-out;
+	animation: bouncedelay 1.4s infinite ease-in-out;
+
+	-webkit-animation-fill-mode: both;
+	animation-fill-mode: both;
+}
+
+.spinner .bounce1 {
+	-webkit-animation-delay: -0.32s;
+	animation-delay: -0.32s;
+}
+
+.spinner .bounce2 {
+	-webkit-animation-delay: -0.16s;
+	animation-delay: -0.16s;
+}
+
+@-webkit-keyframes bouncedelay {
+	0%, 80%, 100% {
+		-webkit-transform: scale(0.0);
+	}
+
+	40% {
+		-webkit-transform: scale(1.0);
+	}
+}
+
+@keyframes bouncedelay {
+	0%, 80%, 100% { 
+		transform: scale(0.0);
+		-webkit-transform: scale(0.0);
+	}
+
+	40% { 
+		transform: scale(1.0);
+		-webkit-transform: scale(1.0);
+	}
+}
 </style>
 </head>
 <body>
-<h1>Convert HTML to Image</h1></h1>
-<div id="explain" >
-	<p>You can use this page to convert HTML into an image or canvas easily.</p>
-	<p>Powered by <a href="http://html2canvas.hertzen.com/" target="_blank" >html2canvas</a> + <a href="http://www.tinymce.com/" target="_blank" >TinyMCE</a>.</p>
-	<p>Please wrap your HTML into one &lt;p> or &lt;div>.</p>
+<div id="container">
+	<h1>Convert HTML to Image</h1></h1>
+	<div id="explain" >
+		<p>You can use this page to convert HTML into an image or canvas easily.</p>
+		<p>Powered by <a href="http://html2canvas.hertzen.com/" target="_blank" >html2canvas</a> + <a href="http://www.tinymce.com/" target="_blank" >TinyMCE</a>.</p>
+		<p>Please wrap your HTML into one &lt;p> or &lt;div>.</p>
+	</div>
+	<textarea></textarea>
+	<p id="buttons" >
+		<a id="html2image" href="#" >To Image</a>
+		<a id="html2canvas" href="#" >To Canvas</a>
+	</p>
+	<div id="result" ></div>
+	<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+	<!-- HTML2Image -->
+	<ins class="adsbygoogle"
+	     style="display:block"
+	     data-ad-client="ca-pub-1821434700708607"
+	     data-ad-slot="4133883193"
+	     data-ad-format="auto"></ins>
+	<script>
+	(adsbygoogle = window.adsbygoogle || []).push({});
+	</script>
 </div>
-<textarea></textarea>
-<p id="buttons" >
-	<a id="html2image" href="#" >To Image</a>
-	<a id="html2canvas" href="#" >To Canvas</a>
-</p>
-<div id="result" ></div>
-<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- HTML2Image -->
-<ins class="adsbygoogle"
-     style="display:block"
-     data-ad-client="ca-pub-1821434700708607"
-     data-ad-slot="4133883193"
-     data-ad-format="auto"></ins>
-<script>
-(adsbygoogle = window.adsbygoogle || []).push({});
-</script>
+<div class="spinner">
+	<div class="bounce1"></div>
+  	<div class="bounce2"></div>
+  	<div class="bounce3"></div>
+</div>
 <!--[if lt IE 9]>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 <![endif]-->
@@ -121,15 +191,18 @@ tinymce.init({
 </script>
 <script>
 (function () {
-	var $result = $('#result');
+	var $body = $('body'),
+		$result = $('#result');
 
 	$('#buttons > a').click(function() {
-		var $body = $(tinymce.activeEditor.contentDocument.body),
-			$target = $body.find('p, div'),
+		var $mceBody = $(tinymce.activeEditor.contentDocument.body),
+			$target = $mceBody.find('p, div'),
 			self = this;
 
 		if ($target.length > 0) {
-			$body.scrollTop(0);
+			$body.addClass('converting');
+
+			$mceBody.scrollTop(0);
 
 			$target.eq(0).find('img').each(function() {
 				var url = this.src;
@@ -145,6 +218,7 @@ tinymce.init({
 				onrendered: function(canvas) {
 		    		$result.html(self.id === 'html2canvas' ? canvas : '<img src="' + canvas.toDataURL() + '">');
 		    		window.location = '#result';
+		    		$body.removeClass('converting');
 				}
 			});
 		}
