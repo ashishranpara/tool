@@ -200,7 +200,14 @@ tinymce.init({
             $editorBody = $(editor.contentDocument.body);
         }
 
-        var $wrap = $('<article style="position: absolute">' + editor.getContent() + '</article>');
+        var content = editor.getContent();
+
+        if (content === '') {
+            $body.removeClass('converting');
+            return false;
+        }
+
+        var $wrap = $('<article style="position: absolute">' + content + '</article>');
 
         $wrap.find('img').each(function() {
                 this.crossOrigin = 'Anonymous';
