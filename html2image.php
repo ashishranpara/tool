@@ -10,7 +10,7 @@ body {
 }
 
 h1 {
-	margin: 12px 6px 8px;
+	margin: 8px 6px;
 }
 
 #explain {
@@ -18,7 +18,7 @@ h1 {
 }
 
 #explain > p {
-	margin: 8px 0;
+	margin: 8px 6px;
 }
 
 #explain > p > a {
@@ -98,12 +98,10 @@ h1 {
 	width: 18px;
 	height: 18px;
 	background-color: orange;
-
 	border-radius: 100%;
 	display: inline-block;
 	-webkit-animation: bouncedelay 1.4s infinite ease-in-out;
 	animation: bouncedelay 1.4s infinite ease-in-out;
-
 	-webkit-animation-fill-mode: both;
 	animation-fill-mode: both;
 }
@@ -143,20 +141,18 @@ h1 {
 </head>
 <body>
 <div id="container">
-	<h1>Convert HTML to Image</h1></h1>
+	<h1>Convert HTML to Image</h1>
 	<div id="explain" >
-		<p>You can use this page to convert HTML into an image or canvas easily.</p>
+		<p>You can use this online converter to convert HTML into an image or canvas easily.</p>
 		<p>Powered by <a href="http://html2canvas.hertzen.com/" target="_blank" >html2canvas</a> + <a href="http://www.tinymce.com/" target="_blank" >TinyMCE</a>.</p>
-		<p>Please wrap your HTML into one &lt;p> or &lt;div>.</p>
 	</div>
 	<textarea></textarea>
 	<p id="buttons" >
 		<a id="html2image" href="#" >To Image</a>
 		<a id="html2canvas" href="#" >To Canvas</a>
 	</p>
-	<div id="result" ></div>
+	<div id="result" >&nbsp;</div>
 	<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-	<!-- HTML2Image -->
 	<ins class="adsbygoogle"
 	     style="display:block"
 	     data-ad-client="ca-pub-1821434700708607"
@@ -190,38 +186,44 @@ tinymce.init({
 });
 </script>
 <script>
-(function () {
-	var $body = $('body'),
-		$result = $('#result');
+(function() {
+	var $mceBody = null,
+		$body = $('body'),
+		$result = $body.find('#result');
 
 	$('#buttons > a').click(function() {
-		var $mceBody = $(tinymce.activeEditor.contentDocument.body),
-			$target = $mceBody.find('p, div'),
-			self = this;
+		$body.addClass('converting');
 
-		if ($target.length > 0) {
-			$body.addClass('converting');
+		if ($mceBody === null) {
+			$mceBody = $(tinymce.activeEditor.contentDocument.body);
+		}
 
-			$mceBody.scrollTop(0);
+		var origin = $mceBody.html(),
+			$wrap = $('<article style="position: absolute">' + origin + '</article>');
 
-			$target.eq(0).find('img').each(function() {
+		$wrap.find('img').each(function() {
+				this.crossOrigin = 'Anonymous';
+
 				var url = this.src;
 
-				if (/^https:\/\/cors-anywhere.herokuapp.com\//.exec(url) === null) {
-					this.crossOrigin = 'Anonymous';
-					this.src = 'https://cors-anywhere.herokuapp.com/' + url;
-				}
+				this.src = 'https://cors-anywhere.herokuapp.com/' + url;
 			});
 
-			html2canvas($target[0], {
+		$mceBody
+			.html($wrap)
+			.scrollTop(0);
+
+		var self = this;
+
+		html2canvas($wrap, {
 				useCORS: true,
 				onrendered: function(canvas) {
-		    		$result.html(self.id === 'html2canvas' ? canvas : '<img src="' + canvas.toDataURL() + '">');
-		    		window.location = '#result';
-		    		$body.removeClass('converting');
-				}
+						$result.html(self.id === 'html2canvas' ? canvas : '<img src="' + canvas.toDataURL() + '">');
+						window.location = '#result';
+						$body.removeClass('converting');
+						$mceBody.html(origin);
+					}
 			});
-		}
 
 		return false;
 	});
