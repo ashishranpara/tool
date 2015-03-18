@@ -178,10 +178,10 @@ h1 {
 <script>
 tinymce.init({
     selector: 'textarea',
-    plugins: 'textcolor, charmap, emoticons, fullscreen, print, code',
+    plugins: 'textcolor, charmap, emoticons, fullscreen, image, print, code',
     valid_children: '+body[style]',
     menubar: false,
-    toolbar: 'undo redo | fontsizeselect forecolor backcolor bold italic charmap emoticons | fullscreen print code',
+    toolbar: 'undo redo | fontsizeselect forecolor backcolor bold italic charmap emoticons image | fullscreen print code',
     height: 200
 });
 </script>
