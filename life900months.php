@@ -176,6 +176,12 @@
         padding-left: 32px;
         width: 0;
     }
+
+    @media only screen and (max-device-width: 736px) {
+        #container > header > p {
+            vertical-align: -4px;
+        }
+    }
 </style>
 </head>
 <body>
