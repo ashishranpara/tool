@@ -41,6 +41,7 @@
 <ul>
     <li><a href="html2image" >Convert HTML to Image</a></li>
     <li><a href="life900months" >Life is only 900 months</a></li>
+    <li><a href="oanda" >Oanda Interest Rate Differential Table</a></li>
 </ul>
 <script>
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
