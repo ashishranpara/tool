@@ -82,7 +82,9 @@
         h1 {
             margin-top: 12px;
         }
+    }
 
+    @media only screen and (max-device-width: 736px) and (orientation: portrait) {
         .compare-borrow, .compare-lend {
             display: none;
         }
