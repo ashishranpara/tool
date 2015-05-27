@@ -36,7 +36,7 @@
     }
 
     #preview > p > img {
-        width: 90%;
+        max-width: 90%;
     }
 </style>
 </head>
@@ -67,6 +67,7 @@
 <!--[if gte IE 9]><!-->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js" ></script>
 <!--[endif]-->
+<script src="vendor/exif.js" ></script>
 <script>
     (function() {
         var $form = $('#resize'),
@@ -86,11 +87,11 @@
         });
             
         $form.submit(function(e) {
+            $preview.empty();
+
             var width = $width.val() ^ 0,
                 height = $height.val() ^ 0,
                 type = $type.val();
-
-            $preview.empty();
 
             Array.prototype.slice.call($files[0].files).forEach(function(file) {
                 var fileReader = new FileReader();
@@ -99,63 +100,84 @@
                     var image = new Image();
                     
                     image.onload = function() {
-                        var canvas = document.createElement('canvas'),
-                            context = canvas.getContext('2d'),
-                            w,
-                            h;
-
-                        if(width && height) {
-                            w = width;
-                            h = height;
-                        }
-                        else if(width) {
-                            w = width;
-                            h = width / this.width * this.height;
-                        }
-                        else if(height) {
-                            w = height / this.height * this.width;
-                            h = height;
-                        }
-                        else {
-                            w = this.width;
+                        var w = this.width,
                             h = this.height;
-                        }
-                        
-                        canvas.width = w;
-                        canvas.height = h;
-                        
-                        context.drawImage(this, 0, 0, w, h);
 
-                        var dataURL = canvas.toDataURL('image/' + type);
+                        EXIF.getData(this, function() {
+                            var orientation = EXIF.getTag(this, 'Orientation');
 
-                        $preview.append('<p><img src="' + dataURL + '" ></p>');
+                            if (orientation === 8 || orientation === 6) {
+                                h = [w, w = h][0];
+                            }
 
-                        var name = file.name;
-                            i = name.lastIndexOf('.');
-                        
-                        if(i === -1) {
-                            name += (type === 'jpeg' ? '_resized.jpg' : '_resized.png');
-                        }
-                        else {
-                            name = name.substr(0, i) + '_resized.' + (type === 'jpeg' ? 'jpg' : 'png');
-                        }
-                        
-                        if(navigator.msSaveBlob) {
-                            navigator.msSaveBlob(canvas.msToBlob(), name);
-                            return;
-                        }
-                        
-                        var e = document.createEvent('MouseEvents');
-                        
-                        e.initEvent('click', true, true);
-                        
-                        $('<a>', {
-                            download : name,
-                            href : dataURL,
-                            target : '_blank'
-                        })[0].dispatchEvent(e);
+                            var canvas = document.createElement('canvas'),
+                                context = canvas.getContext('2d');
+
+                            if (width && height) {
+                                w = width;
+                                h = height;
+                            }
+                            else if (width) {
+                                h *= width / w;
+                                w = width;
+                            }
+                            else if (height) {
+                                w *= height / h;
+                                h = height;
+                            }
+
+                            canvas.width = w;
+                            canvas.height = h;
+
+                            switch (orientation) {
+                                case 8:
+                                    context.setTransform(0, -1, 1, 0, 0, h);
+                                    context.drawImage(this, 0, 0, h, w);
+                                    break;
+                                case 6:
+                                    context.setTransform(0, 1, -1, 0, w, 0);
+                                    context.drawImage(this, 0, 0, h, w);
+                                    break;
+                                case 3:
+                                    context.setTransform(1, 0, 0, -1, 0, h);
+                                    context.drawImage(this, 0, 0, w, h);
+                                    break;
+                                default:
+                                    context.drawImage(this, 0, 0, w, h);
+                            }
+
+
+                            var dataURL = canvas.toDataURL('image/' + type);
+
+                            $preview.append('<p><img src="' + dataURL + '" ></p>');
+
+                            var name = file.name;
+                                i = name.lastIndexOf('.');
+
+                            if(i === -1) {
+                                name += (type === 'jpeg' ? '_resized.jpg' : '_resized.png');
+                            }
+                            else {
+                                name = name.substr(0, i) + '_resized.' + (type === 'jpeg' ? 'jpg' : 'png');
+                            }
+
+                            if(navigator.msSaveBlob) {
+                                navigator.msSaveBlob(canvas.msToBlob(), name);
+                                return;
+                            }
+
+                            var e = document.createEvent('MouseEvents');
+
+                            e.initEvent('click', true, true);
+
+                            $('<a>', {
+                                download : name,
+                                href : dataURL,
+                                target : '_blank'
+                            })[0].dispatchEvent(e);
+                        });
                     };
-                    
+
                     image.src = e.target.result;
                 };
                 
