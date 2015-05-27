@@ -35,12 +35,22 @@
 <p><input id="input" type="text" onclick="this.select();" /></p>
 <p>
     <select id="function">
-        <option value="encodeURI" selected="selected">encodeURI</option>
-        <option value="encodeURIComponent">encodeURIComponent</option>  
-        <option value="escape">escape</option>
-        <option value="decodeURI">decodeURI</option> 
-        <option value="decodeURIComponent">decodeURIComponent</option> 
-        <option value="unescape">unescape</option>
+<?php
+    $selected = isset($_GET['s']) ? $_GET['s'] : null;
+
+    foreach (array(
+            'encodeURI',
+            'encodeURIComponent',
+            'escape',
+            'decodeURI',
+            'decodeURIComponent',
+            'unescape'
+        ) as $function) {
+?>
+        <option value="<?php echo $function ?>" <?php if ($function === $selected) { echo 'selected="selected"'; } ?> ><?php echo $function ?></option>
+<?php
+    }
+?>
     </select>
 </p>
 <p><input id="button" type="button" value="Go!"  /> </p>
