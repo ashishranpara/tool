@@ -9,6 +9,7 @@
     body {
         background: #EEE;
         padding: 12px;
+        font-size: 36px;
     }
 
     h1 {
@@ -16,20 +17,18 @@
         margin: 18px 0;
     }
 
-    input[type=text] {
-        font-size: 36px;
+    input {
         width: 96%;
     }
 
     p {
-        font-size: 36px;
         margin: 18px 0;
     }
 </style>
 </head>
 <body>
 <h1>What day is the date?</h1>
-<input type="text" />
+<input type="number" />
 <p></p>
 <script>
 (function() {
