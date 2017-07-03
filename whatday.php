@@ -39,9 +39,17 @@
     input.value = date.toISOString().slice(0, 10).replace(/-/g, '');
 
     var calculate = function() {
-        var value = input.value;
+        var value = input.value,
+            y = value.substr(0, 4) ^ 0,
+            m = value.substr(4, 2) ^ 0,
+            d = value.substr(6, 2) ^ 0;
 
-        date.setFullYear(value.substr(0, 4) ^ 0, (value.substr(4, 2) ^ 0) - 1, value.substr(6, 2) ^ 0);
+        if (y === 0 || m === 0 || d === 0) {
+            p.innerHTML = '--------';
+            return;
+        }
+
+        date.setFullYear(y, m - 1, d);
 
         var answer = [
             'Sunday',
@@ -59,6 +67,7 @@
     calculate();
 
     input.addEventListener('input', calculate, false);
+    input.focus();
 })();
 </script>
 <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
