@@ -14,7 +14,7 @@
 
     h1 {
         font-size: 36px;
-        margin: 18px 0;
+        margin: 0 0 18px;
     }
 
     input {
@@ -23,6 +23,12 @@
 
     p {
         margin: 18px 0;
+    }
+
+    @media screen and (max-width: 413px) {
+        h1 {
+           font-size: 28px;
+        }
     }
 </style>
 </head>
