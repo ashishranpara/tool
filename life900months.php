@@ -230,15 +230,6 @@
         </div>
     </div>
 </div>
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<ins class="ad adsbygoogle"
-     style="display:block"
-     data-ad-client="ca-pub-1821434700708607"
-     data-ad-slot="5381140394"
-     data-ad-format="auto"></ins>
-<script>
-(adsbygoogle = window.adsbygoogle || []).push({});
-</script>
 <!--[if lt IE 9]>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js" ></script>
 <![endif]-->
