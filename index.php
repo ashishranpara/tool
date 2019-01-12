@@ -45,6 +45,7 @@
     <li><a href="life900months" >Life is only 900 months</a></li>
     <li><a href="oanda" >Oanda Interest Rate Differential Table</a></li>
     <li><a href="whatday" >What day is the date</a></li>
+    <li><a href="timestamp" >Timestamp &lt;-&gt; Date</a></li>
 </ul>
 <script>
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
