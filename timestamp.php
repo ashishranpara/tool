@@ -3,7 +3,7 @@
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no" >
 <meta charset="UTF-8" >
-<title>What day is the date?</title>
+<title>Timestamp &lt;-&gt; Date</title>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.2/normalize.min.css" rel="stylesheet" >
 <style>
     body {
