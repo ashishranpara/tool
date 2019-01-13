@@ -46,6 +46,8 @@
     <li><a href="oanda" >Oanda Interest Rate Differential Table</a></li>
     <li><a href="whatday" >What day is the date?</a></li>
     <li><a href="timestamp" >Unix Timestamp &lt;-&gt; DateTime Converter</a></li>
+    <li><a href="screen" >Screen Height, Width, Area, &amp; Diagonal Length Calculator</a></li>
+    <li><a href="simp2trad" >Convert Simplified Chinese text file to Traditional Chinese</a></li>
 </ul>
 <script>
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
