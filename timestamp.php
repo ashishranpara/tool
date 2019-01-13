@@ -3,7 +3,7 @@
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no" >
 <meta charset="UTF-8" >
-<title>Convert Unix Timestamp to UTC / Local Date &amp; Time</title>
+<title>Unix Timestamp &lt;-&gt; DateTime Converter</title>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.2/normalize.min.css" rel="stylesheet" >
 <style>
     body {
@@ -33,7 +33,7 @@
 </style>
 </head>
 <body>
-<h1>Convert Unix Timestamp to UTC Date &amp; Time</h1>
+<h1>Unix Timestamp &lt;-&gt; DateTime Converter</h1>
 <p><input id="timestamp" type="number" /></p>
 <p><input id="date" /></p>
 <p>
