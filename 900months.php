@@ -18,17 +18,19 @@
 
     #container > header {
         line-height: 1.4;
-        margin: 12px 18px;
+        margin: 6px 12px;
     }
 
     #container > header > h1 {
         display: inline;
+        font-weight: bold;
+        font-size: 24px;
     }
 
     #container > header > p {
         display: inline;
         margin-left: 6px;
-        vertical-align: -2px;
+        vertical-align: -4px;
     }
 
     #container > header > p > a:focus {
@@ -90,7 +92,7 @@
         left: 6px;
         line-height: 36px;
         position: absolute;
-        top: -4px;
+        top: 0;
     }
 
     .modal > .modal-dialog > .modal-content > h2 {
@@ -129,7 +131,7 @@
     .modal > .modal-dialog > .modal-content > ul > li > input {
         height: 32px;
         margin-left: 40px;
-        width: 200px;
+        width: 80%;
     }
 
     .circle {
@@ -176,12 +178,6 @@
         padding-left: 32px;
         width: 0;
     }
-
-    @media only screen and (max-device-width: 736px) {
-        #container > header > p {
-            vertical-align: -4px;
-        }
-    }
 </style>
 </head>
 <body>
@@ -196,7 +192,7 @@
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
             <button type="button" data-dismiss="modal" aria-label="Close" ><span aria-hidden="true" >&times;</span></button>
-            <h2><span class="icon-birthday" ></span>Please enter your and your family's birthdays</h2>
+            <h2><span class="icon-birthday" ></span>Please enter your and your family's birthdays:</h2>
             <ul>
                 <li>
                     <span class="circle red" ></span>
