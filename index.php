@@ -42,9 +42,9 @@
     <li><a href="html2image" >Convert HTML to Image</a></li>
     <li><a href="resizeimage" >Resize Image</a></li>
     <li><a href="encodeuri" >encodeURI</a></li>
-    <li><a href="life900months" >Life is only 900 months</a></li>
+    <li><a href="900" >Life is only 900 months</a></li>
     <li><a href="oanda" >Oanda Interest Rate Differential Table</a></li>
-    <li><a href="whatday" >What day is the date</a></li>
+    <li><a href="whatday" >What day is the date?</a></li>
     <li><a href="timestamp" >Timestamp &lt;-&gt; Date</a></li>
 </ul>
 <script>
