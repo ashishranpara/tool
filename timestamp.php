@@ -3,7 +3,7 @@
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no" >
 <meta charset="UTF-8" >
-<title>Timestamp &lt;-&gt; Date</title>
+<title>Convert Unix Timestamp to UTC / Local Date &amp; Time</title>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.2/normalize.min.css" rel="stylesheet" >
 <style>
     body {
@@ -17,7 +17,7 @@
         margin: 0 0 18px;
     }
 
-    input {
+    #timestamp, #date {
         width: 96%;
     }
 
@@ -33,13 +33,25 @@
 </style>
 </head>
 <body>
-<h1>Timestamp &lt;-&gt; Date</h1>
+<h1>Convert Unix Timestamp to UTC Date &amp; Time</h1>
 <p><input id="timestamp" type="number" /></p>
 <p><input id="date" /></p>
+<p>
+    <label>
+        <input type="radio" name="timezone" value="UTC" id="utc" checked>
+        UTC
+    </label>
+    <label>
+        <input type="radio" name="timezone" value="local" id="local" >
+        Local Time
+    </label>
+</p>
 <script>
 (function() {
     var inputT = document.getElementById('timestamp'),
         inputD = document.getElementById('date'),
+        radioU = document.getElementById('utc'),
+        radioL = document.getElementById('local');
         now = new Date(),
         ms = now.getTime();
 
@@ -48,12 +60,21 @@
     }
 
     var formatDate = function(date) {
+        if (radioU.checked === true) {
+            return date.getUTCFullYear() +
+                '/' + (date.getUTCMonth() + 1) +
+                '/' + date.getUTCDate() +
+                ' ' + date.getUTCHours().toString() +
+                ':' + date.getUTCMinutes().toString().padStart(2, 0) +
+                ':' + date.getUTCSeconds().toString().padStart(2, 0);
+        }
+
         return date.getFullYear() +
-            '/' + (date.getMonth() + 1) +
-            '/' + date.getDate() +
-            ' ' + date.getHours().toString() +
-            ':' + date.getMinutes().toString().padStart(2, 0) +
-            ':' + date.getSeconds().toString().padStart(2, 0);
+                '/' + (date.getMonth() + 1) +
+                '/' + date.getDate() +
+                ' ' + date.getHours().toString() +
+                ':' + date.getMinutes().toString().padStart(2, 0) +
+                ':' + date.getSeconds().toString().padStart(2, 0);
     }
 
     inputT.value = formatTime(ms);
@@ -71,16 +92,31 @@
                 ':' + (value.substr(12, 2) ^ 0);
         }
 
-        inputT.value = formatTime(Date.parse(value));
+        var ms = Date.parse(value);
+
+        if (isNaN(ms) === true) {
+            inputT.value = '';
+            return;
+        }
+
+        if (radioU.checked === true) {
+            ms -= now.getTimezoneOffset() * 60 * 1000;
+        }
+
+        inputT.value = formatTime(ms);
     }, false);
 
-    inputT.addEventListener('input', function() {
+    var updateDate = function() {
         var date = new Date();
 
-        date.setTime(this.value * 1000);
+        date.setTime(inputT.value * 1000);
 
         inputD.value = formatDate(date);
-    }, false);
+    }
+
+    inputT.addEventListener('input', updateDate, false);
+    radioU.addEventListener('click', updateDate, false);
+    radioL.addEventListener('click', updateDate, false);
 
     if (mobileCheck() === false || innerWidth < innerHeight) {
         inputT.focus();
@@ -109,7 +145,7 @@
 <script>
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
     (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.inse  rtBefore(a,m)
     })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
     ga('create', 'UA-6851063-2', 'auto');
