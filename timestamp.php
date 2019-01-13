@@ -77,7 +77,7 @@
     inputT.addEventListener('input', function() {
         var date = new Date();
 
-        date.setTime(this.value);
+        date.setTime(this.value * 1000);
 
         inputD.value = formatDate(date);
     }, false);
