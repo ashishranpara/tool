@@ -55,6 +55,7 @@
 
     ul {
         margin-top: -8px;
+        padding-left: 20px;
     }
 
     ul li {
@@ -208,7 +209,6 @@
 <script>
 (adsbygoogle = window.adsbygoogle || []).push({});
 </script>
-<p>Related Links:</p>
 <ul>
     <li><a href="http://fxtrade.oanda.com/analysis/interest-calculator" target="_blank" >Oanda Currency Interest Rates Calculator</a></li>
     <li><a href="http://www.oanda.sg/why/spreads/recent"target="_blank" >Recent OANDA Spreads</a></li>
