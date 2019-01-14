@@ -167,7 +167,7 @@ h1 {
     <div class="bounce2"></div>
     <div class="bounce3"></div>
 </div>
-<script src="https://html2canvas.hertzen.com/dist/html2canvas.js"></script>
+<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 <script src="https://cdn.tinymce.com/4/tinymce.min.js"></script>
 <script>
 tinymce.init({
