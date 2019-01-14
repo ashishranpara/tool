@@ -209,7 +209,8 @@ tinymce.init({
         }
 
         html2canvas(result, {
-            useCORS: true
+            useCORS: true,
+            backgroundColor: null
         }).then(function(canvas) {
             result.innerHTML = '';
 
