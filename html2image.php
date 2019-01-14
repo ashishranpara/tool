@@ -224,6 +224,10 @@ tinymce.init({
                     this.style.width = this.width / 2 + 'px';
                 }
 
+                image.onerror = function() {
+                    this.style.display = 'none';
+                }
+
                 image.src = canvas.toDataURL();
 
                 result.appendChild(image);
