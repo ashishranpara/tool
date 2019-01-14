@@ -30,6 +30,17 @@
         font-size: 16px;
         width: 180px;
     }
+
+    p {
+        display: inline;
+        margin-left: 4px;
+        font-size: 16px;
+    }
+
+    p > a {
+        color: #DD4B39;
+        text-decoration: none;
+    }
 </style>
 </head>
 <body>
@@ -41,6 +52,7 @@
         <option value="GBK">GB</option>
     </select>
     <button>Convert</button>
+    <p>Powered by <a href="https://zh.wikipedia.org/wiki/%E6%96%B0%E5%90%8C%E6%96%87%E5%A0%82" target="_blank">新同文堂</a></p>
 </form>
 <script>
     var map = <?php echo file_get_contents('vendor/tongwentang.json') ?>;
@@ -117,3 +129,4 @@
 </script>
 </body>
 </html>
+
