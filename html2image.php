@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" >
 <title>Convert HTML to Image</title>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.2/normalize.min.css" rel="stylesheet" >
+<link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" rel="stylesheet" >
 <style>
 body {
     background: #DDD;
@@ -77,12 +77,12 @@ h1 {
     margin: 12px;
 }
 
-.converting #container {
+.waiting #container {
     opacity: 0.5;
     transition: opacity .1s ease-in-out;
 }
 
-.converting .spinner {
+.waiting .spinner {
     display: block;
 }
 
@@ -164,16 +164,10 @@ h1 {
 </div>
 <div class="spinner">
     <div class="bounce1"></div>
-      <div class="bounce2"></div>
-      <div class="bounce3"></div>
+    <div class="bounce2"></div>
+    <div class="bounce3"></div>
 </div>
-<!--[if lt IE 9]>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-<![endif]-->
-<!--[if gte IE 9]><!-->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-<!--[endif]-->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+<script src="https://html2canvas.hertzen.com/dist/html2canvas.js"></script>
 <script src="https://cdn.tinymce.com/4/tinymce.min.js"></script>
 <script>
 tinymce.init({
@@ -188,54 +182,64 @@ tinymce.init({
 <script>
 (function() {
     var editor = null,
-        $editorBody = null,
-        $body = $('body'),
-        $result = $body.find('#result');
+        editorBody = null,
+        result = document.getElementById('result'),
+        htmlClassList = document.documentElement.classList;
 
-    $('#buttons > a').click(function() {
-        $body.addClass('converting');
+    var render = function(kind) {
+        htmlClassList.add('waiting');
 
         if (editor === null) {
             editor = tinymce.activeEditor;
-            $editorBody = $(editor.contentDocument.body);
+            editorBody = editor.contentDocument.body;
         }
 
         var content = editor.getContent();
 
-        if (content === '') {
-            $body.removeClass('converting');
-            return false;
+        result.innerHTML = content;
+
+        var images = result.getElementsByTagName('img'),
+            n = images.length;
+
+        for (var i = 0; i < n; ++i) {
+            var image = images[i];
+
+            image.crossOrigin = 'Anonymous';
+            image.src = 'https://cors-anywhere.herokuapp.com/' + image.src;
         }
 
-        var $wrap = $('<article style="position: absolute">' + content + '</article>');
+        html2canvas(result, {
+            useCORS: true
+        }).then(function(canvas) {
+            result.innerHTML = '';
 
-        $wrap.find('img').each(function() {
-                this.crossOrigin = 'Anonymous';
+            if (kind === 'canvas') {
+                result.appendChild(canvas);
+            }
+            else {
+                var image = document.createElement('img');
 
-                var url = this.src;
+                image.onload = function() {
+                    this.style.width = this.width / 2 + 'px';
+                }
 
-                this.src = 'https://cors-anywhere.herokuapp.com/' + url;
-            });
+                image.src = canvas.toDataURL();
 
-        var origin = $editorBody.html();
+                result.appendChild(image);
+            }
 
-        $editorBody
-            .html($wrap)
-            .scrollTop(0);
+            htmlClassList.remove('waiting');
+        });
+    }
 
-        var self = this;
+    document.getElementById('html2image').addEventListener('click', function(e) {
+        render('image');
+        e.preventDefault();
+    });
 
-        html2canvas($wrap, {
-                useCORS: true,
-                onrendered: function(canvas) {
-                        $result.html(self.id === 'html2canvas' ? canvas : '<img src="' + canvas.toDataURL() + '">');
-                        window.location = '#result';
-                        $editorBody.html(origin);
-                        $body.removeClass('converting');
-                    }
-            });
-
-        return false;
+    document.getElementById('html2canvas').addEventListener('click', function(e) {
+        render('canvas');
+        e.preventDefault();
     });
 })();
 </script>
