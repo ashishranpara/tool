@@ -221,7 +221,7 @@ tinymce.init({
                 var image = document.createElement('img');
 
                 image.onload = function() {
-                    this.style.width = this.width / 2 + 'px';
+                    this.style.width = this.width / (window.devicePixelRatio || 1) + 'px';
                 }
 
                 image.onerror = function() {
